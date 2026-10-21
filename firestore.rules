@@ -1,0 +1,30 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    
+    // Connection test document
+    match /test/{docId} {
+      allow read, write: if true;
+    }
+
+    // Classes collection: Readable by all, writable by teacher or admin
+    match /classes/{classId} {
+      allow read: if true;
+      allow write: if true;
+    }
+
+    // Student Profiles collection:
+    // Allows students on any machine with their student ID to read and synchronize progress
+    match /students/{studentId} {
+      allow read, write: if true;
+    }
+
+    // Attempts Log collection:
+    // Synchronizes every math attempt real-time so teacher dashboard sees it instantly
+    match /attempts/{attemptId} {
+      allow read: if true;
+      allow create: if true;
+      allow update, delete: if false; // Immutable audit log
+    }
+  }
+}

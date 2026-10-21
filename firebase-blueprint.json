@@ -1,0 +1,77 @@
+{
+  "entities": {
+    "StudentProfile": {
+      "title": "StudentProfile",
+      "description": "Profile, progress, lives, and rewards for a student",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "studentCode": { "type": "string" },
+        "fullName": { "type": "string" },
+        "nickname": { "type": "string" },
+        "classId": { "type": "string" },
+        "avatarColor": { "type": "string" },
+        "xp": { "type": "number" },
+        "crystals": { "type": "number" },
+        "lives": { "type": "number" },
+        "maxLives": { "type": "number" },
+        "currentZone": { "type": "number" },
+        "unlockedZones": { "type": "array" },
+        "completedTaskIds": { "type": "array" },
+        "firstAttemptSuccessTaskIds": { "type": "array" },
+        "hintsViewedTaskIds": { "type": "array" },
+        "hasCrown": { "type": "boolean" },
+        "lastActive": { "type": "string" }
+      },
+      "required": ["id", "studentCode", "fullName", "classId", "xp", "crystals", "lives"]
+    },
+    "TaskAttempt": {
+      "title": "TaskAttempt",
+      "description": "Chronological audit log of every math puzzle submission",
+      "type": "object",
+      "properties": {
+        "attemptId": { "type": "string" },
+        "studentId": { "type": "string" },
+        "taskId": { "type": "string" },
+        "zoneId": { "type": "number" },
+        "skill": { "type": "string" },
+        "skillLabel": { "type": "string" },
+        "userAnswer": { "type": "string" },
+        "isCorrect": { "type": "boolean" },
+        "attemptNumber": { "type": "number" },
+        "hintsUsedCount": { "type": "number" },
+        "feedbackText": { "type": "string" },
+        "timestamp": { "type": "string" }
+      },
+      "required": ["attemptId", "studentId", "taskId", "zoneId", "isCorrect"]
+    },
+    "ClassGroup": {
+      "title": "ClassGroup",
+      "description": "Classroom group managed by teacher",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "name": { "type": "string" },
+        "teacherName": { "type": "string" },
+        "schoolYear": { "type": "string" },
+        "createdAt": { "type": "string" },
+        "studentCount": { "type": "number" }
+      },
+      "required": ["id", "name"]
+    }
+  },
+  "firestore": {
+    "/classes/{classId}": {
+      "schema": { "$ref": "#/entities/ClassGroup" },
+      "description": "Class groups list"
+    },
+    "/students/{studentId}": {
+      "schema": { "$ref": "#/entities/StudentProfile" },
+      "description": "Student progress, inventory and current island"
+    },
+    "/attempts/{attemptId}": {
+      "schema": { "$ref": "#/entities/TaskAttempt" },
+      "description": "Immutable submissions log for teacher analytics"
+    }
+  }
+}
